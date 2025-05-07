@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Custom Encrypter</title>
+  <style>
+    body {
+      font-family: monospace;
+      padding: 20px;
+      background: #1e1e1e;
+      color: #f0f0f0;
+    }
+    textarea, input, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🔐 Message Encrypter/Decrypter</h2>
+
+<textarea id="inputText" rows="4" placeholder="Enter your message..."></textarea>
+
+<button onclick="encrypt()">Encrypt</button>
+<button onclick="decrypt()">Decrypt</button>
+
+<textarea id="outputText" rows="6" placeholder="Output will appear here..." readonly></textarea>
+
+<button onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+
+<script>
+const lettersToNumbers = {
+  " ": 0,
+  ...Object.fromEntries("abcdefghijklmnopqrstuvwxyz".split('').map((l, i) => [l, i + 1])),
+  ...Object.fromEntries("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').map((l, i) => [l, i + 27])),
+  ...Object.fromEntries("1234567890".split('').map((l, i) => [l, i + 53])),
+  "!": 63, "@": 64, "#": 65, "$": 66, "%": 67, "^": 68, "&": 69, "*": 70, "(": 71, ")": 72,
+  "-": 73, "_": 74, "=": 75, "+": 76, "`": 77, "~": 78, "[": 79, "{": 80, "]": 81, "}": 82,
+  "|": 83, ":": 84, ";": 85, '"': 86, "'": 87, ",": 88, "<": 89, ".": 90, ">": 91, "?": 92,
+  "/": 93, "\\": 94, "\n": 95, "\a": 96
+};
+
+const numbersToLetters = Object.fromEntries(
+  Object.entries(lettersToNumbers).map(([k, v]) => [v.toString(), k])
+);
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function generateRandomString(len = 46) {
+  const chars = "0123456789.";
+  let out = "";
+  for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
+  return out;
+}
+
+function encrypt() {
+  const message = document.getElementById("inputText").value;
+  let key_base = [], num_message = [];
+
+  for (let ch of message) {
+    let rand = getRandomInt(1, 10000000);
+    key_base.push(rand);
+    num_message.push((lettersToNumbers[ch] + (rand * 3)).toString());
+  }
+
+  let encryptedNums = num_message.join('-');
+
+  let keyParts = key_base.map(rand => {
+    let rand2 = getRandomInt(12, 1000000);
+    return (rand + (rand2 * 2)).toString() + "." + rand2.toString();
+  });
+
+  const obfuscationMarker = generateRandomString();
+  encryptedNums += obfuscationMarker + generateRandomString();
+  const key = obfuscationMarker + "=." + keyParts.join("-");
+
+  const finalEncrypted = key + ".=" + generateRandomString() + "=." + encryptedNums;
+  document.getElementById("outputText").value = finalEncrypted;
+}
+
+function decrypt() {
+  const encrypted = document.getElementById("inputText").value;
+
+  const obfuscationMarker = encrypted.slice(0, encrypted.indexOf("=."));
+  const keyPart = encrypted.slice(encrypted.indexOf("=.") + 2, encrypted.indexOf(".="));
+  const messagePart = encrypted.slice(encrypted.lastIndexOf("=.") + 2);
+  
+  const keyEntries = keyPart.split("-");
+  let key_base = keyEntries.map(entry => {
+    let [num, rand2] = entry.split(".");
+    return parseInt(num) - (parseInt(rand2) * 2);
+  });
+
+  const rawEncrypted = messagePart.split(obfuscationMarker)[0];
+  const messageNums = rawEncrypted.split("-");
+
+  let decrypted = "";
+  for (let i = 0; i < messageNums.length; i++) {
+    const num = parseInt(messageNums[i]) - (key_base[i] * 3);
+    decrypted += numbersToLetters[num.toString()];
+  }
+
+  document.getElementById("outputText").value = decrypted;
+}
+
+function copyToClipboard() {
+  const output = document.getElementById("outputText");
+  output.select();
+  document.execCommand("copy");
+  alert("Copied to clipboard!");
+}
+</script>
+
+</body>
+</html>
+
