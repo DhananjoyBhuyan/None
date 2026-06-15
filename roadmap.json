@@ -1,0 +1,51 @@
+{
+  "Tier1": {
+    "objective": "Core Calculators",
+    "calculators": [
+      {"EMI calculator": {"status": "completed", "notes": "fixed all final bugs"}},
+      {"SIP calculator": {"status": "completed", "notes": "fixed all final bugs"}},
+      {"LumpSum calculator": {"status": "completed", "notes": "fixed all final bugs"}},
+      {"Loan prepayment calculator": {"status": "completed", "notes": "fixed all final bugs"}},
+      {"Repayment Schedule calculator": {"status": "completed", "notes": "fixed all final bugs"}}
+    ],
+    "tier_status": "completed",
+    "latest_version_with": ["Dhananjoy"],
+    "pushed to git": false
+  },
+  "Tier2": {
+    "objective": "Decision Calculators",
+    "calculators": [
+      {"Goal-based SIP": {"status": "in_progress", "notes": "implemented and available"}},
+      {"Rent vs Buy": {"status": "in_progress", "notes": "implemented and available"}},
+      {"Loan vs Invest": {"status": "in_progress", "notes": "implemented and available"}},
+      {"Lump Sum vs SIP": {"status": "not_started", "notes": "not yet implemented in decision folder"}}
+    ],
+    "tier_status": "in_progress",
+    "latest_version_with": ["Dhananjoy", "Dev"],
+    "pushed to git": true
+  },
+  "Tier3": {
+    "objective": "Life Simulators",
+    "calculators": [
+      {"Salary Growth Simulator": {"status": "not_started", "notes": "roadmap placeholder"}},
+      {"Net Worth Projection": {"status": "not_started", "notes": "roadmap placeholder"}},
+      {"Retirement Planner": {"status": "not_started", "notes": "roadmap placeholder"}},
+      {"FIRE Planner": {"status": "not_started", "notes": "roadmap placeholder"}}
+    ],
+    "tier_status": "not_started",
+    "latest_version_with": ["Dhananjoy", "Dev"],
+    "pushed to git": false
+  },
+  "Tier4": {
+    "objective": "Advanced",
+    "calculators": [
+      {"Monte Carlo Retirement": {"status": "not_started", "notes": "roadmap placeholder"}},
+      {"Portfolio Rebalancing": {"status": "not_started", "notes": "roadmap placeholder"}},
+      {"Tax Optimisation": {"status": "not_started", "notes": "roadmap placeholder"}},
+      {"Asset Allocation": {"status": "not_started", "notes": "roadmap placeholder"}}
+    ],
+    "tier_status": "not_started",
+    "latest_version_with": [],
+    "pushed to git": false
+  }
+}
